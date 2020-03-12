@@ -2,6 +2,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.function.Executable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,10 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.util.concurrent.TimeUnit;
-
-import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class mainAppTest {
     WebDriver driver;
@@ -50,11 +49,17 @@ public class mainAppTest {
         waitUntilItChanges("2 122 000 \u20BD","18 154 \u20BD", "30 256 \u20BD", "9,7 %");
         clickWaitAndAssert("//input[contains(@data-test-id, 'canConfirmIncome')]/parent::label/parent::div");
         waitUntilItChanges("2 122 000 \u20BD","18 623 \u20BD", "31 037 \u20BD", "10,0 %");
-        //builder.moveToElement(driver.findElement(By.xpath("//input[contains(@data-test-id, 'youngFamilyDiscount')]"))).perform();
-        //((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath("//input[contains(@data-test-id, 'youngFamilyDiscount')]/parent::label/parent::div")));
-        click("//*[@id=\"calc-main\"]/div/div/div[2]/div[5]/div[1]/div[2]/label/span[3]/svg");
-        //executor.executeScript("arguments[0].click();", driver.findElement(By.xpath("//input[contains(@data-test-id, 'youngFamilyDiscount')]/parent::label/parent::div")));
+        ((JavascriptExecutor)driver).executeScript("arguments[0].click();", driver.findElement(By.xpath("//input[@data-test-id=\"youngFamilyDiscount\"]")));
         waitUntilItChanges("2 122 000 \u20BD","17 998 \u20BD", "29 997 \u20BD", "9,6 %");
+        clickWaitAndAssert("//input[contains(@data-test-id, 'canConfirmIncome')]/parent::label/parent::div");
+        Assertions.assertAll("Тест упал из-за процента", (Executable) () ->{
+            Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@data-test-id, 'amountOfCredit')]")).getText().equals("2 122 000 \\u20BD"));
+         Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@data-test-id, 'monthlyPayment')]")).getText().equals("17 535 \\u20BD"));
+            Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@data-test-id, 'requiredIncome')]")).getText().equals("29 224 \\u20BD"));
+            Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@data-test-id, 'rate')]")).getText().equals("9,4 %"));
+
+        });
+
     }
     @After
     public void afterTest(){
@@ -67,6 +72,8 @@ public class mainAppTest {
     }
 
     public void changeFrame(String frameID){
+        executor.executeScript("window.scrollTo(0, 1500)");
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(frameID)));
         driver.switchTo().frame(driver.findElement(By.id(frameID)));
     }
 
