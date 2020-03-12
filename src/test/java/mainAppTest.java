@@ -37,7 +37,7 @@ public class mainAppTest {
     @Test
     public void mainTest(){
         driver.get(baseUrl);
-        goToAndWait("//span[contains(text(), 'Èïîòåêà')]", "//a[contains(text(), 'Èïîòåêà íà ãîòîâîå æèëü')]");
+        goToAndWait("//span[contains(text(), 'Ð˜Ð¿Ð¾Ñ‚ÐµÐºÐ°')]", "//a[contains(text(), 'Ð˜Ð¿Ð¾Ñ‚ÐµÐºÐ° Ð½Ð° Ð³Ð¾Ñ‚Ð¾Ð²Ð¾Ðµ Ð¶Ð¸Ð»ÑŒ')]");
         changeFrame("iFrameResizer0");
         fullFill("//*[@id=\"estateCost\"]", "5180000");
         waitUntilItChanges("4 403 000 \u20BD","46 244 \u20BD", "66 062 \u20BD", "9,6 %");
@@ -52,7 +52,7 @@ public class mainAppTest {
         ((JavascriptExecutor)driver).executeScript("arguments[0].click();", driver.findElement(By.xpath("//input[@data-test-id=\"youngFamilyDiscount\"]")));
         waitUntilItChanges("2 122 000 \u20BD","17 998 \u20BD", "29 997 \u20BD", "9,6 %");
         clickWaitAndAssert("//input[contains(@data-test-id, 'canConfirmIncome')]/parent::label/parent::div");
-        Assertions.assertAll("Òåñò óïàë èç-çà ïðîöåíòà", (Executable) () ->{
+        Assertions.assertAll("Ð¢ÐµÑÑ‚ ÑƒÐ¿Ð°Ð» Ð¸Ð·-Ð·Ð° Ð¿Ñ€Ð¾Ñ†ÐµÐ½Ñ‚Ð°", (Executable) () ->{
             Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@data-test-id, 'amountOfCredit')]")).getText().equals("2 122 000 \\u20BD"));
          Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@data-test-id, 'monthlyPayment')]")).getText().equals("17 535 \\u20BD"));
             Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@data-test-id, 'requiredIncome')]")).getText().equals("29 224 \\u20BD"));
